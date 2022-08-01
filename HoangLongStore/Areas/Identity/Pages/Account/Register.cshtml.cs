@@ -66,8 +66,7 @@ namespace HoangLongStore.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
             public string FullName { get; set; }
             public string Address { get; set; }
-            [Required]
-            public string Role { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -87,7 +86,7 @@ namespace HoangLongStore.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    IdentityResult roleresult = await _userManager.AddToRoleAsync(user, Input.Role);
+                    IdentityResult roleresult = await _userManager.AddToRoleAsync(user, "user");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
