@@ -15,6 +15,8 @@ namespace HoangLongStore.Data
 				: base(options)
 		{
 		}
+    public DbSet<Product> Products { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -30,7 +32,6 @@ namespace HoangLongStore.Data
         new IdentityRole() { Id = "c7b013f0-5201-4317-abd8-c211f91b7330",
           Name = "admin", ConcurrencyStamp = "2", NormalizedName = "admin" }
           );
-      }
-
+    }
   }
 }
