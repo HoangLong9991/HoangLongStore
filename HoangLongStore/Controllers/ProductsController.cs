@@ -67,5 +67,16 @@ namespace HoangLongStore.Controllers
 				return RedirectToAction("Index");
 		}
 
+		[HttpGet]
+		public IActionResult Delete(int id)
+		{
+			var product = context.Products.SingleOrDefault(t => t.Id == id);
+
+			context.Remove(product);
+			context.SaveChanges();
+
+			return RedirectToAction("Index");
+		}
+
 	}
 }
