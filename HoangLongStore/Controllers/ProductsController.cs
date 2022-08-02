@@ -78,5 +78,13 @@ namespace HoangLongStore.Controllers
 			return RedirectToAction("Index");
 		}
 
+		[HttpGet]
+		public IActionResult Detail(int id)
+		{
+			var product = context.Products.SingleOrDefault(t => t.Id == id);
+
+			return View(product);
+		}
+
 	}
 }
