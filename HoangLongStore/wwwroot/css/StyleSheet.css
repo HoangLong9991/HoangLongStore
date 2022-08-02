@@ -33,7 +33,6 @@
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
-    -webkit-text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
     text-shadow: rgba(0, 0, 0, .01) 0 0 1px
 }
 
@@ -151,4 +150,20 @@ div {
     border-left: solid 1px #e5e5e5
 }
 
+@media only screen and (max-width: 600px) {
+    .col-xs-6 {
+        margin-left: 13px;
+        margin-top: 13px
+    }
+    .order-2 {
+        display: none;
+    }
 
+    nav {
+        display: none
+    }
+
+    .image_selected {
+        height: min-content;
+    }
+}
