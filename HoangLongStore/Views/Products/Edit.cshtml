@@ -1,0 +1,38 @@
+﻿@model HoangLongStore.Models.Product
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1> Hello Admin</h1>
+
+
+<form asp-controller="Products" asp-action="Edit" method="post">
+    <input asp-for="Id" type="hidden" value= "@Model.Id" />
+    
+    <div class=" form-group">
+        <label asp-for="NameProduct">Name Product</label>
+        <input asp-for="NameProduct" class="form-control" placeholder="Please enter name product" />
+        <span asp-validation-for="NameProduct" class="text-danger"> </span>
+    </div>
+    <div class="form-group">
+        <label asp-for="QuantityProduct">Quantity Product</label>
+        <input asp-for="QuantityProduct" class="form-control" placeholder="Please enter quantity product"  />
+    </div>
+    <div class="form-group">
+        <label asp-for="PriceProduct">Price Product</label>
+        <input asp-for="PriceProduct" class="form-control" placeholder="Please enter price product" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DescriptionProduct">Description Product</label>
+        <input asp-for="DescriptionProduct" class="form-control" placeholder="Please enter Description product" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+
+
+
+</form>
