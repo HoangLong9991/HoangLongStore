@@ -1,4 +1,4 @@
-﻿@model HoangLongStore.Models.Product
+﻿@model HoangLongStore.ViewModels.ProductBrandsViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,24 +13,24 @@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="NameProduct" class="control-label"></label>
-                <input asp-for="NameProduct" class="form-control" />
-                <span asp-validation-for="NameProduct" class="text-danger"></span>
+                <label asp-for="product.NameProduct" class="control-label"></label>
+                <input asp-for="product.NameProduct" class="form-control" />
+                <span asp-validation-for="product.NameProduct" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="QuantityProduct" class="control-label"></label>
-                <input asp-for="QuantityProduct" class="form-control" />
-                <span asp-validation-for="QuantityProduct" class="text-danger"></span>
+                <label asp-for="product.QuantityProduct" class="control-label"></label>
+                <input asp-for="product.QuantityProduct" class="form-control" />
+                <span asp-validation-for="product.QuantityProduct" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PriceProduct" class="control-label"></label>
-                <input asp-for="PriceProduct" class="form-control" />
-                <span asp-validation-for="PriceProduct" class="text-danger"></span>
+                <label asp-for="product.PriceProduct" class="control-label"></label>
+                <input asp-for="product.PriceProduct" class="form-control" />
+                <span asp-validation-for="product.PriceProduct" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DescriptionProduct" class="control-label"></label>
-                <input asp-for="DescriptionProduct" class="form-control" />
-                <span asp-validation-for="DescriptionProduct" class="text-danger"></span>
+                <label asp-for="product.DescriptionProduct" class="control-label"></label>
+                <input asp-for="product.DescriptionProduct" class="form-control" />
+                <span asp-validation-for="product.DescriptionProduct" class="text-danger"></span>
             </div>
             
             <div class="form-group">

@@ -15,8 +15,7 @@ namespace HoangLongStore.Models
 		public int QuantityProduct { get; set; }	
 		public int PriceProduct { get; set; }
 		public string DescriptionProduct { get; set; }
-		[NotMapped]
-		public List<IFormFile> FilesImage { get; set; }
+		public string ImageProduct { get; set; }
 
 	}
 }

@@ -1,10 +1,12 @@
 ﻿using HoangLongStore.Data;
 using HoangLongStore.Models;
+using HoangLongStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
@@ -39,15 +41,16 @@ namespace HoangLongStore.Controllers
 			return View();
 		}
 		[HttpPost]
-		public IActionResult Create(Product product)
-		{
+		public IActionResult Create(ProductBrandsViewModel productViewModel)
+{
 			int i = 1;
-			if(!ModelState.IsValid) return View(product);
-			if (product.FilesImage.Count > 0)
+
+			if (!ModelState.IsValid) return View(productViewModel);
+			if (productViewModel.FilesImage.Count > 0)
 			{
-					foreach (var file in product.FilesImage)
+					foreach (var file in productViewModel.FilesImage)
 				{
-					string namefile = i++ + product.NameProduct +  ".jpg";
+					string namefile = i++ + productViewModel.product.NameProduct +  ".jpg";
 					string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
 					string fileNameWithPath = Path.Combine(path,namefile);
 					using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
@@ -55,8 +58,9 @@ namespace HoangLongStore.Controllers
 						file.CopyTo(stream);
 					}
 				}
+				productViewModel.product.ImageProduct = "1" + productViewModel.FilesImage[0].FileName;
 			}
-				var result = context.Products.Add(product);
+			var result = context.Products.Add(productViewModel.product);
 			context.SaveChanges();
 			return RedirectToAction("Index");
 		}
@@ -81,7 +85,6 @@ namespace HoangLongStore.Controllers
 		{
 			var productInDb = context.Products.FirstOrDefault(t => t.Id == product.Id);
 
-				productInDb.NameProduct = product.NameProduct;
 				productInDb.QuantityProduct += product.QuantityProduct;
 				productInDb.PriceProduct = product.PriceProduct;
 				productInDb.DescriptionProduct = product.DescriptionProduct;
