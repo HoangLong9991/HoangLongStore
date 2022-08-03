@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HoangLongStore.Models
 {
@@ -12,7 +15,8 @@ namespace HoangLongStore.Models
 		public int QuantityProduct { get; set; }	
 		public int PriceProduct { get; set; }
 		public string DescriptionProduct { get; set; }
-
+		[NotMapped]
+		public List<IFormFile> FilesImage { get; set; }
 
 	}
 }
