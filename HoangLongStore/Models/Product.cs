@@ -16,6 +16,11 @@ namespace HoangLongStore.Models
 		public int PriceProduct { get; set; }
 		public string DescriptionProduct { get; set; }
 		public string ImageProduct { get; set; }
+		[Required]
+		[ForeignKey("Brand")]
+		public int BrandId { get; set; }
+		public Brand Brand { get; set; }
+
 
 	}
 }
