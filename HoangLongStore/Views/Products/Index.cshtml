@@ -7,11 +7,11 @@
 @model IEnumerable<Product>
 @if (User.IsInRole("admin")){
 
-<h1> Hello Admin</h1>
+<h1>Manage Products</h1>
 
 <div class="form-group">
   <a asp-controller="Products" asp-action="Create" class="btn btn-primary">
-    Create a new Product
+    Create new Product
   </a>
 </div>
 

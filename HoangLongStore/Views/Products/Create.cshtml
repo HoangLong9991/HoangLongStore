@@ -1,45 +1,48 @@
-﻿@model HoangLongStore.ViewModels.ProductBrandsViewModel
+﻿@using HoangLongStore.ViewModels
+@model ProductBrandsViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
+<h1>Create Product</h1>
 
-<h1>Create</h1>
-
-<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Create" enctype="multipart/form-data"  asp-controller="Products" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="product.NameProduct" class="control-label"></label>
-                <input asp-for="product.NameProduct" class="form-control" />
-                <span asp-validation-for="product.NameProduct" class="text-danger"></span>
+                <label asp-for="Product.NameProduct" class="control-label"></label>
+                <input asp-for="Product.NameProduct" class="form-control" />
+                <span asp-validation-for="Product.NameProduct" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="product.QuantityProduct" class="control-label"></label>
-                <input asp-for="product.QuantityProduct" class="form-control" />
-                <span asp-validation-for="product.QuantityProduct" class="text-danger"></span>
+                <label asp-for="Product.QuantityProduct" class="control-label"></label>
+                <input asp-for="Product.QuantityProduct" class="form-control" />
+                <span asp-validation-for="Product.QuantityProduct" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="product.PriceProduct" class="control-label"></label>
-                <input asp-for="product.PriceProduct" class="form-control" />
-                <span asp-validation-for="product.PriceProduct" class="text-danger"></span>
+                <label asp-for="Product.PriceProduct" class="control-label"></label>
+                <input asp-for="Product.PriceProduct" class="form-control" />
+                <span asp-validation-for="Product.PriceProduct" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="product.DescriptionProduct" class="control-label"></label>
-                <input asp-for="product.DescriptionProduct" class="form-control" />
-                <span asp-validation-for="product.DescriptionProduct" class="text-danger"></span>
+                <label asp-for="Product.DescriptionProduct" class="control-label"></label>
+                <input asp-for="Product.DescriptionProduct" class="form-control" />
+                <span asp-validation-for="Product.DescriptionProduct" class="text-danger"></span>
             </div>
-            
             <div class="form-group">
-                <label asp-for="FilesImage" class="col-form-label">Select Multiple Files</label>
-                <input asp-for="FilesImage" class="form-control" multiple/>
+                <label class="control-label">Brand</label>
+                <select asp-for="@Model.Product.BrandId" 
+                asp-items="@(new SelectList(Model.Brands,"Id", "Name"))" 
+                class="form-control">
+            </select>
+             </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.FilesImage" class="col-form-label">Select Multiple Files</label>
+                <input asp-for="@Model.FilesImage"  class="form-control" multiple/>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" class="btn btn-primary" />
             </div>
         </form>
     </div>

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HoangLongStore.Controllers
 {
@@ -34,15 +35,19 @@ namespace HoangLongStore.Controllers
 			return View(result);
 		}
 
-		[Authorize (Roles = "admin")]
+		[Authorize(Roles = "admin")]
+
 		[HttpGet]
 		public IActionResult Create()
 		{
-			
-			return View();
+			var viewModel = new ProductBrandsViewModel
+			{
+				Brands = context.Brands.ToList()
+			};
+			return View(viewModel);
 		}
 		[HttpPost]
-		public IActionResult Create(ProductBrandsViewModel productViewModel)
+		public async Task<IActionResult> Create(ProductBrandsViewModel productViewModel)
 {
 			int i = 1;
 
@@ -50,19 +55,27 @@ namespace HoangLongStore.Controllers
 			if (productViewModel.FilesImage.Count > 0)
 			{
 					foreach (var file in productViewModel.FilesImage)
-				{
-					string namefile = i++ + productViewModel.product.NameProduct +  ".jpg";
-					string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-					string fileNameWithPath = Path.Combine(path,namefile);
-					using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
 					{
-						file.CopyTo(stream);
+							string namefile = i++ + productViewModel.Product.NameProduct +  ".jpg";
+							string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+							string fileNameWithPath = Path.Combine(path,namefile);
+							using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+							{
+									file.CopyTo(stream);
+							}
 					}
-				}
-				productViewModel.product.ImageProduct = "1" + productViewModel.FilesImage[0].FileName;
-			}
-			var result = context.Products.Add(productViewModel.product);
-			context.SaveChanges();
+					var newProduct = new Product
+						{
+								NameProduct = productViewModel.Product.NameProduct,
+								QuantityProduct = productViewModel.Product.QuantityProduct,
+								PriceProduct = productViewModel.Product.PriceProduct,
+								DescriptionProduct = productViewModel.Product.DescriptionProduct,
+								ImageProduct = "1" + productViewModel.FilesImage[0].FileName,
+								BrandId = productViewModel.Product.BrandId
+					};
+						context.Add(newProduct);
+				await  context.SaveChangesAsync();
+						}
 			return RedirectToAction("Index");
 		}
 
