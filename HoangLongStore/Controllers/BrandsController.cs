@@ -64,10 +64,14 @@ namespace HoangLongStore.Controllers
 		public IActionResult Delete(int id)
 		{
 			Brand brandInDb = context.Brands.SingleOrDefault(t => t.Id == id);
-			context.Remove(brandInDb);
+			List<Product> productsOfBrand = context.Products.Where(p => p.BrandId == brandInDb.Id).ToList();
+			context.Products.RemoveRange(productsOfBrand);
+			context.Remove(brandInDb);	
+			context.SaveChanges();
+
 			return RedirectToAction("Index");
 		}
-
+		
 		[HttpGet]
 		public IActionResult Detail(int id)
 		{
@@ -76,9 +80,10 @@ namespace HoangLongStore.Controllers
 
 			List<Product> productsInDb = context.Products.ToList();
 
-			List<Product> productsOfBrand = productsInDb.Where(p => p.BrandId == brandInDb.Id).ToList();
-			return View(productsOfBrand);
+			List<Product> productsOfBrand = productsInDb.Where(p => p.BrandId == brandInDb.Id).ToList();		
+			ViewBag.BrandName = brandInDb.Name;
 
+			return View(productsOfBrand);
 		}
 	}
 }
