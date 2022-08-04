@@ -31,6 +31,7 @@ namespace HoangLongStore.Controllers
 		public IActionResult Index()
 		{
 			var result = context.Products.ToList();
+	
 
 			return View(result);
 		}
@@ -70,7 +71,7 @@ namespace HoangLongStore.Controllers
 								QuantityProduct = productViewModel.Product.QuantityProduct,
 								PriceProduct = productViewModel.Product.PriceProduct,
 								DescriptionProduct = productViewModel.Product.DescriptionProduct,
-								ImageProduct = "1" + productViewModel.FilesImage[0].FileName,
+								ImageProduct = "1" + productViewModel.Product.NameProduct+ ".jpg",
 								BrandId = productViewModel.Product.BrandId
 					};
 						context.Add(newProduct);
