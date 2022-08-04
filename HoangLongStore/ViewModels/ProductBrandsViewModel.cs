@@ -9,7 +9,7 @@ namespace HoangLongStore.ViewModels
 	{
 		public Product product { get; set; }
 		[Required]
-		public List<Brand> brands { get; set; }
+		public IEnumerable<Brand> brands { get; set; }
 		[Display(Name = "File")]
 		public List<IFormFile> FilesImage { get; set; }
 	}

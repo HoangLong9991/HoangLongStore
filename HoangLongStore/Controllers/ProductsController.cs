@@ -38,6 +38,7 @@ namespace HoangLongStore.Controllers
 		[HttpGet]
 		public IActionResult Create()
 		{
+			
 			return View();
 		}
 		[HttpPost]

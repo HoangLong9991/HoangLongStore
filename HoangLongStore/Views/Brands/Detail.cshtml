@@ -1,0 +1,54 @@
+﻿@model IEnumerable<HoangLongStore.Models.Product>
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h1>Detail</h1>
+
+<p>
+    <a asp-action="Index">Back To List Brand</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NameProduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuantityProduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceProduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescriptionProduct)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriceProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DescriptionProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

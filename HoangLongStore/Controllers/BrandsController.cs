@@ -1,11 +1,15 @@
 ﻿using HoangLongStore.Data;
 using HoangLongStore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HoangLongStore.Controllers
 {
+	[Authorize(Roles = "admin")]
 	public class BrandsController : Controller
 	{
 		private ApplicationDbContext context;
@@ -39,6 +43,42 @@ namespace HoangLongStore.Controllers
 			return View(brand);
 		}
 
+		[HttpGet]
+		public IActionResult Edit(int id)
+		{
+			Brand brand = context.Brands.SingleOrDefault(t => t.Id == id);
+			return View(brand);
+		}
 
+		[HttpPost]
+		public IActionResult Edit(Brand brand)
+		{
+			Brand brandInDb = context.Brands.SingleOrDefault(t => t.Id == brand.Id);
+
+			brandInDb.Name = brand.Name;
+			context.SaveChanges();
+			return RedirectToAction("Index");
+		}
+
+		[HttpGet]
+		public IActionResult Delete(int id)
+		{
+			Brand brandInDb = context.Brands.SingleOrDefault(t => t.Id == id);
+			context.Remove(brandInDb);
+			return RedirectToAction("Index");
+		}
+
+		[HttpGet]
+		public IActionResult Detail(int id)
+		{
+			Brand brandInDb = context.Brands.SingleOrDefault(t => t.Id == id);
+
+
+			List<Product> productsInDb = context.Products.ToList();
+
+			List<Product> productsOfBrand = productsInDb.Where(p => p.BrandId == brandInDb.Id).ToList();
+			return View(productsOfBrand);
+
+		}
 	}
 }
