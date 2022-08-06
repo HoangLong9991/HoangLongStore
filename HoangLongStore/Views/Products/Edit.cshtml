@@ -23,7 +23,7 @@
     </div>
     <div class="form-group">
         <label asp-for="DescriptionProduct">Description Product</label>
-        <input asp-for="DescriptionProduct" class="form-control" placeholder="Please enter Description product" />
+        <text-area asp-for="DescriptionProduct" class="form-control" rows="4" placeholder="Please enter Description product" >@Model.DescriptionProduct</text-area>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Save</button>

@@ -1,4 +1,5 @@
 ﻿using HoangLongStore.Data;
+using HoangLongStore.DTOs.Responses;
 using HoangLongStore.Models;
 using HoangLongStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
@@ -122,35 +124,49 @@ namespace HoangLongStore.Controllers
 		[HttpGet]
 		public IActionResult Detail(int id)
 		{
-			var product = context.Products.SingleOrDefault(t => t.Id == id);
+			var productInDb = context.Products.SingleOrDefault(t => t.Id == id);
+			if (productInDb == null)
+			{
+				return NotFound();
+			}
+			var product = new DetailsProductResponses
+			{
+				NameProduct = productInDb.NameProduct,
+				QuantityProduct = productInDb.QuantityProduct,
+				PriceProduct = productInDb.PriceProduct,
+				DescriptionProduct = productInDb.DescriptionProduct,
+				ImageProductUrl = GetImage(productInDb.NameProduct)
+			};
+			
+			return View(product);
+
+		}
+		[NonAction]
+		private List<string> GetImage(string nameProduct)
+		{
+			List<string> image = new List<string>();
 
 			string path = "wwwroot/images/";
-
 
 			var allfiles = Directory.GetFiles(path);
 			int i = 1;
 			foreach (var file in allfiles)
 			{
-				string stringToReplace = "wwwroot/images/" + i;
-				string fileName = product.NameProduct + ".jpg";
+				string stringToReplace = path + i;
+				string fileName = nameProduct + ".jpg";
+
 				if (file.Replace(stringToReplace, "") == fileName)
 				{
-						string host = Request.Host.Value;
+					i++;
+					string host = Request.Host.Value;
 
-						string domain = "https://" + host;
-						ViewBag.data = file.Replace("wwwroot", domain);
+					string domain = "https://" + host;
+					image.Add(file.Replace("wwwroot", domain));
 
 				}
-								
-
 			}
-
-
-
-
-			return View(product);
+			return image;
 		}
-
 	}
 }
 
