@@ -17,7 +17,8 @@ namespace HoangLongStore.Data
 		}
     public DbSet<Product> Products { get; set; }
     public DbSet<Brand> Brands { get; set; }
-
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
