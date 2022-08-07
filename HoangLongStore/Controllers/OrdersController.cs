@@ -22,7 +22,7 @@ namespace HoangLongStore.Controllers
 			this.userManager = userManager;
 		}
 
-		
+
 		public IActionResult Index()
 		{
 			IEnumerable<Order> orders = context
@@ -53,7 +53,7 @@ namespace HoangLongStore.Controllers
 				if (orderDetail is null) { return NotFound(); }
 
 				order.PriceOrder = GetPriceOfOrder(order.Id);
-					
+
 			}
 
 			else
@@ -81,11 +81,11 @@ namespace HoangLongStore.Controllers
 
 		[NonAction]
 		internal OrderDetail CreateOrderDetails(int idProduct, int idOrder)
-		{ 
+		{
 			var productInDb = context.Products.SingleOrDefault(t => t.Id == idProduct);
 			if (productInDb.QuantityProduct > 0)
 			{
-				 var orderDetailsInDb = context.OrderDetails.SingleOrDefault(t => t.OrderId == idOrder && t.ProductId == idProduct);
+				var orderDetailsInDb = context.OrderDetails.SingleOrDefault(t => t.OrderId == idOrder && t.ProductId == idProduct);
 				if (orderDetailsInDb is null)
 				{
 					OrderDetail newOrderDetail = new OrderDetail();
@@ -109,6 +109,19 @@ namespace HoangLongStore.Controllers
 			}
 			else return null;
 
+		}
+		[HttpGet]
+		public IActionResult Purchase()
+		{
+			var orderToBuy = context.Orders.SingleOrDefault(t => t.UserId == userManager.GetUserId(User) && t.StatusOrder == OrderStatus.Unconfirmed);
+			
+			orderToBuy.StatusOrder = OrderStatus.InProgress;
+			//foreach(var item in orderToBuy.OrderDetails)
+			//{
+			//	var productToBuy = context.Products.SingleOrDefault(t => t.)
+			//}
+			context.SaveChanges();
+			return RedirectToAction("Index");
 		}
 	}
 }
