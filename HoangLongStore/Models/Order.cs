@@ -14,7 +14,7 @@ namespace HoangLongStore.Models
 		public DateTime DateOrder { get; set; } = DateTime.Now;
 		public int PriceOrder { get; set; }
 		public OrderStatus StatusOrder { get; set; }
-		[Required(ErrorMessage = "Cart is empty")]
+
 		public List<OrderDetail> OrderDetails { get; set; }
 	}
 }

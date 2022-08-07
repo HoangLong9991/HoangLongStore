@@ -82,7 +82,7 @@ else {
             </div>
             <div class="d-flex justify-content-between mb-2">
               <p class="text-muted mb-0" src="">Available:<span class="fw-bold">@item.QuantityProduct</span></p>
-              <a src="" >Add To Cart</a>
+              <a  asp-controller="Orders" asp-action="Create" asp-route-id=@item.Id >Add To Cart</a>
             </div>
           </div>
         </div>
