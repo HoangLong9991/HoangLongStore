@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace HoangLongStore.Models
 {
@@ -14,5 +16,7 @@ namespace HoangLongStore.Models
 		public Product Product { get; set; }
 		public int Quantity { get; set; }
 		public int Price { get; set; }
+
+	
 	}
 }

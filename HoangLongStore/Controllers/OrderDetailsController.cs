@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace HoangLongStore.Controllers
 {
@@ -19,22 +20,17 @@ namespace HoangLongStore.Controllers
 			this.context = context;
 			this.userManager = userManager;
 		}
-		public IActionResult Index()
+		public IActionResult Index(int id)
 		{
-			return View();
-		}
-
-
-		[NonAction]
-		internal int GetPriceOfOrder(int idOrder)
-		{
-			var orderDetails = context.OrderDetails.Where(t => t.OrderId == idOrder);
-			int totalPrice = 0;
-			foreach (var item in orderDetails)
+			if (id != 0)
 			{
-				totalPrice += item.Price;
+				IEnumerable<OrderDetail> orderDetailsByIdOrder = context.OrderDetails
+					.Include(t => t.Product).Where(t => t.OrderId == id).ToList();
+				return View(orderDetailsByIdOrder);
 			}
-			return totalPrice;
+			IEnumerable<OrderDetail> orderDetails = context.OrderDetails.Include(t => t.Product)
+				.Where(t => t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed).ToList();
+			return View(orderDetails);
 		}
 	}
 }

@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HoangLongStore.Controllers
 {
+	[Authorize]
 	public class OrdersController : Controller
 	{
 		private ApplicationDbContext context;
@@ -20,11 +22,11 @@ namespace HoangLongStore.Controllers
 			this.userManager = userManager;
 		}
 
-
+		
 		public IActionResult Index()
 		{
 			IEnumerable<Order> orders = context
-				.Orders.ToList();
+				.Orders.Where(t => t.UserId == userManager.GetUserId(User)).ToList();
 			return View(orders);
 		}
 
