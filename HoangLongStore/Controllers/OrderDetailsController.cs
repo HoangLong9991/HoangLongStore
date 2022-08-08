@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using HoangLongStore.ViewModels;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HoangLongStore.Controllers
 {
@@ -20,17 +23,32 @@ namespace HoangLongStore.Controllers
 			this.context = context;
 			this.userManager = userManager;
 		}
-		public IActionResult Index(int id)
+		[HttpGet]
+		public async Task<IActionResult> Index(int id)
 		{
+			var currentUser = await userManager.GetUserAsync(User);
+
 			if (id != 0)
 			{
-				IEnumerable<OrderDetail> orderDetailsByIdOrder = context.OrderDetails
-					.Include(t => t.Product).Where(t => t.OrderId == id).ToList();
+				DetailOrderViewModel orderDetailsByIdOrder = new DetailOrderViewModel();
+				orderDetailsByIdOrder.OrderDetails = context.OrderDetails.Include(t => t.Product)
+					.Include(t =>  t.Order).Where(t => t.OrderId == id).ToList();
+
+				orderDetailsByIdOrder.FullName = currentUser.FullName;
+
+				orderDetailsByIdOrder.Address = currentUser.Address;
+				orderDetailsByIdOrder.Order = context.Orders.SingleOrDefault(t => t.Id == id);
 				return View(orderDetailsByIdOrder);
 			}
-			IEnumerable<OrderDetail> orderDetails = context.OrderDetails.Include(t => t.Product)
-				.Where(t => t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed).ToList();
-			return View(orderDetails);
+			DetailOrderViewModel cart = new DetailOrderViewModel();
+
+				cart.OrderDetails = context.OrderDetails.Include(t => t.Product)
+				.Include(t => t.Order).Where(t => t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed).ToList();
+			cart.Order = context.Orders.SingleOrDefault(t => t.StatusOrder == Enums.OrderStatus.Unconfirmed);
+			cart.FullName = currentUser.FullName;
+
+			cart.Address = currentUser.Address;
+			return View(cart);
 		}
 	}
 }
