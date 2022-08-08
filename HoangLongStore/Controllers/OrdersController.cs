@@ -8,6 +8,8 @@ using System.ComponentModel.DataAnnotations;
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace HoangLongStore.Controllers
 {
@@ -113,13 +115,27 @@ namespace HoangLongStore.Controllers
 		[HttpGet]
 		public IActionResult Purchase()
 		{
-			var orderToBuy = context.Orders.SingleOrDefault(t => t.UserId == userManager.GetUserId(User) && t.StatusOrder == OrderStatus.Unconfirmed);
+			var orderToBuy = context.Orders.Include(t => t.OrderDetails).SingleOrDefault(t => t.UserId == userManager.GetUserId(User) && t.StatusOrder == OrderStatus.Unconfirmed);
 			
+			foreach(var item in orderToBuy.OrderDetails)
+			{					
+				var productToBuy = context.Products.SingleOrDefault(t => t.Id == item.ProductId);
+
+				if (productToBuy.QuantityProduct > 0)
+				{
+					productToBuy.QuantityProduct -= item.Quantity;
+
+				}
+				else
+				{
+					var error = item.Product.NameProduct + "is out of stock";
+					return RedirectToAction("Index", "OrderDetails");
+
+				}
+			}
+
 			orderToBuy.StatusOrder = OrderStatus.InProgress;
-			//foreach(var item in orderToBuy.OrderDetails)
-			//{
-			//	var productToBuy = context.Products.SingleOrDefault(t => t.)
-			//}
+	
 			context.SaveChanges();
 			return RedirectToAction("Index");
 		}
