@@ -46,6 +46,7 @@ namespace HoangLongStore.Controllers
 				{
 					UserId = userManager.GetUserId(User),
 					StatusOrder = OrderStatus.Unconfirmed,
+					PriceOrder = 0
 				};
 
 				context.Add(order);
@@ -112,6 +113,7 @@ namespace HoangLongStore.Controllers
 			else return null;
 
 		}
+
 		[HttpGet]
 		public IActionResult Purchase()
 		{
@@ -133,7 +135,7 @@ namespace HoangLongStore.Controllers
 
 				}
 			}
-
+			orderToBuy.PriceOrder = GetPriceOfOrder(orderToBuy.Id);
 			orderToBuy.StatusOrder = OrderStatus.InProgress;
 	
 			context.SaveChanges();

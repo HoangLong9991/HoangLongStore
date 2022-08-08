@@ -50,5 +50,29 @@ namespace HoangLongStore.Controllers
 			cart.Address = currentUser.Address;
 			return View(cart);
 		}
+
+
+
+		[HttpGet]
+		public IActionResult Delete (int id)
+		{
+			var orderDetail = context.OrderDetails.Include(t => t.Order)
+				.SingleOrDefault(t => t.Id == id && t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed);
+			context.Remove(orderDetail);
+			context.SaveChanges();
+
+			var order = context.Orders.SingleOrDefault(t => t.Id == orderDetail.OrderId);
+			var orderDetails = context.OrderDetails.Where(t => t.OrderId == orderDetail.OrderId);
+			int totalPrice = 0;
+			foreach (var item in orderDetails)
+			{
+				totalPrice += item.Price;
+			}
+			order.PriceOrder = totalPrice;
+
+			context.SaveChanges();
+
+			return RedirectToAction("Index");
+		}
 	}
 }
