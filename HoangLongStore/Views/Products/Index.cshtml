@@ -67,7 +67,7 @@ else {
         <div class="card" style= " border-radius: 10px !important ">
             <a asp-controller="Products" asp-action="Detail" asp-route-id=@item.Id >
                 <div style=" height: 240px; align-content: center;display: grid;">
-                    <img src="https://localhost:44338/images/@item.ImageProduct"
+                    <img src="@item.ImageProduct"
                     class="card-img-top"  style= " border-radius: 10px !important; display: block;  height: auto;" />
                 </div>
             </a>

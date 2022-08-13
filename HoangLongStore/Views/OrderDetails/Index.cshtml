@@ -33,23 +33,40 @@
     <tbody>
 @foreach (var item in Model.OrderDetails) {
         <tr>
+           <input asp-for="@item.Id" type="hidden" value= "@item.Id" id="id @item.Id" />
+
             <td  style= "display: none">
                 @Html.DisplayFor(modelItem => item.Order.Id)
+                <input asp-for="@item.OrderId" type="hidden" value= "@item.Order.Id" />
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.NameProduct)
+                <input asp-for="@item.ProductId" type="hidden" value= "@item.ProductId" />
+
             </td>
             <td>
-                <input asp-for="@item.Quantity" style="width: 68px !important"/>
+                @if(item.Order.StatusOrder == HoangLongStore.Enums.OrderStatus.Unconfirmed){
+                <input asp-for="@item.Quantity" style="width: 68px !important" id="quantity @item.Id"/>
+                }
+                else{ @Html.DisplayFor(modelItem => item.Product.QuantityProduct)}
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+             <input asp-for="@item.Price" type="hidden" value= "@item.Price"  id="price @item.Id"/>
+                    <p  id="demo @item.Id" >@item.Price</p>
             </td>
             <td>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">View Product</a>
-                @if(item.Order.StatusOrder == HoangLongStore.Enums.OrderStatus.Unconfirmed){
-                <a asp-controller="OrderDetails" asp-action="Delete" asp-route-id="@item.Id">| Delete</a>}
-            </td>
+                    @if (item.Order.StatusOrder == HoangLongStore.Enums.OrderStatus.Unconfirmed)
+                    {
+                        <a asp-controller="OrderDetails" asp-action="Delete" asp-route-id="@item.Id">| Delete</a>
+                        <a src="#"  onclick="refresh(
+                            document.getElementById('quantity @item.Id').value,
+                            document.getElementById('price @item.Id').value, 
+                            document.getElementById('id @item.Id').value)">| Update</a>
+                    }
+                </td>
+ 
         </tr>
 }
     </tbody>
@@ -65,6 +82,7 @@
               <div class="p-2 d-flex">
                 <div class="col-8">Name: </div>
                 <div class="ms-auto">@Model.FullName</div>
+
               </div>
               <div class="p-2 d-flex">
                 <div class="col-8">Address: </div>
@@ -82,7 +100,16 @@
               </div>
         @if (@Model.Order.StatusOrder == HoangLongStore.Enums.OrderStatus.Unconfirmed)
         {
-            <a asp-controller="Orders" asp-action="Purchase" class="btn btn-info" > Purchase</a>
+            <a asp-controller="OrderDetails" asp-action="abc" class="btn btn-info" > Purchase</a>
         }
     </div>
-          </div>
+</div>
+
+
+<script>
+
+function refresh(quantity, price, id) {
+   var a = 'demo ' + id;
+        document.getElementById(a).innerHTML = quantity * price;
+}
+</script>

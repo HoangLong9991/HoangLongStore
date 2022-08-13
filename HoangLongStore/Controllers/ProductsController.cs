@@ -28,8 +28,11 @@ namespace HoangLongStore.Controllers
 		public IActionResult Index()
 		{
 			var result = context.Products.ToList();
-	
-
+			foreach (var item in result)
+			{
+				item.ImageProduct = "//" + Request.Host.Value + "/images/" + item.ImageProduct;
+			}
+			
 			return View(result);
 		}
 
@@ -44,36 +47,38 @@ namespace HoangLongStore.Controllers
 			};
 			return View(viewModel);
 		}
+
+		[Authorize(Roles = "admin")]
 		[HttpPost]
-		public async Task<IActionResult> Create(ProductBrandsViewModel productViewModel)
-{
-			int i = 1;
+		public IActionResult Create(ProductBrandsViewModel productViewModel)
+		{
 
 			if (!ModelState.IsValid) return View(productViewModel);
 			if (productViewModel.FilesImage.Count > 0)
-			{
-					foreach (var file in productViewModel.FilesImage)
+			{			int i = 1;
+
+				foreach (var file in productViewModel.FilesImage)
+				{
+					string namefile = i++ + productViewModel.Product.NameProduct + ".jpg";
+					string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+					string fileNameWithPath = Path.Combine(path, namefile);
+					using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
 					{
-							string namefile = i++ + productViewModel.Product.NameProduct +  ".jpg";
-							string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-							string fileNameWithPath = Path.Combine(path,namefile);
-							using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-							{
-									file.CopyTo(stream);
-							}
+						file.CopyTo(stream);
 					}
-					var newProduct = new Product
-						{
-								NameProduct = productViewModel.Product.NameProduct,
-								QuantityProduct = productViewModel.Product.QuantityProduct,
-								PriceProduct = productViewModel.Product.PriceProduct,
-								DescriptionProduct = productViewModel.Product.DescriptionProduct,
-								ImageProduct = "1" + productViewModel.Product.NameProduct+ ".jpg",
-								BrandId = productViewModel.Product.BrandId
-					};
-						context.Add(newProduct);
-				await  context.SaveChangesAsync();
-						}
+				}
+				var newProduct = new Product
+				{
+					NameProduct = productViewModel.Product.NameProduct,
+					QuantityProduct = productViewModel.Product.QuantityProduct,
+					PriceProduct = productViewModel.Product.PriceProduct,
+					DescriptionProduct = productViewModel.Product.DescriptionProduct,
+					ImageProduct = "1" + productViewModel.Product.NameProduct + ".jpg",
+					BrandId = productViewModel.Product.BrandId
+				};
+				context.Add(newProduct);
+				context.SaveChanges();
+			} 
 			return RedirectToAction("Index");
 		}
 
@@ -144,18 +149,16 @@ namespace HoangLongStore.Controllers
 			string path = "wwwroot/images/";
 
 			var allfiles = Directory.GetFiles(path);
-			int i = 1;
 			foreach (var file in allfiles)
 			{
-				string stringToReplace = path + i;
+				string stringToReplace = file.Substring(0, 16);
+
 				string fileName = nameProduct + ".jpg";
 
 				if (file.Replace(stringToReplace, "") == fileName)
 				{
-					i++;
 					string host = Request.Host.Value;
-
-					string domain = "https://" + host;
+					string domain = "//" + host;
 					image.Add(file.Replace("wwwroot", domain));
 
 				}
@@ -164,5 +167,3 @@ namespace HoangLongStore.Controllers
 		}
 	}
 }
-
-

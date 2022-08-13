@@ -30,7 +30,7 @@ namespace HoangLongStore
 		{
 			services.AddDbContext<ApplicationDbContext>(options =>
 					options.UseSqlServer(
-							Configuration.GetConnectionString("DefaultConnection")));
+							Configuration.GetConnectionString("DeployConnection")));
 			services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
 						.AddRoles<IdentityRole>()
 

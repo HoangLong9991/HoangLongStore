@@ -26,28 +26,27 @@ namespace HoangLongStore.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Index(int id)
 		{
-			var currentUser = await userManager.GetUserAsync(User);
+			var currentUser = await userManager.GetUserAsync(User);		
+			DetailOrderViewModel cart = new DetailOrderViewModel();
+			cart.FullName = currentUser.FullName;
+			cart.Address = currentUser.Address;
 
+			
 			if (id != 0)
 			{
-				DetailOrderViewModel orderDetailsByIdOrder = new DetailOrderViewModel();
-				orderDetailsByIdOrder.OrderDetails = context.OrderDetails.Include(t => t.Product)
-					.Include(t =>  t.Order).Where(t => t.OrderId == id).ToList();
+				cart.OrderDetails = context.OrderDetails.Include(t => t.Product)
+				.Include(t => t.Order).Where(t => t.OrderId == id).ToList();
 
-				orderDetailsByIdOrder.FullName = currentUser.FullName;
-
-				orderDetailsByIdOrder.Address = currentUser.Address;
-				orderDetailsByIdOrder.Order = context.Orders.SingleOrDefault(t => t.Id == id);
-				return View(orderDetailsByIdOrder);
+				cart.Order = context.Orders.SingleOrDefault(t => t.Id == id);
 			}
-			DetailOrderViewModel cart = new DetailOrderViewModel();
-
+			else
+			{
 				cart.OrderDetails = context.OrderDetails.Include(t => t.Product)
 				.Include(t => t.Order).Where(t => t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed).ToList();
-			cart.Order = context.Orders.SingleOrDefault(t => t.StatusOrder == Enums.OrderStatus.Unconfirmed);
-			cart.FullName = currentUser.FullName;
 
-			cart.Address = currentUser.Address;
+				cart.Order = context.Orders.SingleOrDefault(t => t.StatusOrder == Enums.OrderStatus.Unconfirmed);
+			}
+			
 			return View(cart);
 		}
 
@@ -73,6 +72,19 @@ namespace HoangLongStore.Controllers
 			context.SaveChanges();
 
 			return RedirectToAction("Index");
+		}
+
+		[HttpGet]
+		public IActionResult abc(DetailOrderViewModel cart)
+		{
+			foreach(var item in cart.OrderDetails)
+			{
+				var orderdetail = context.OrderDetails.SingleOrDefault(t => t.Id == item.Id);
+				orderdetail.Quantity = item.Quantity;
+			}
+			var a = context.Orders.SingleOrDefault(t => t.Id == cart.Order.Id);
+			context.SaveChanges();
+			return RedirectToAction( "Index" , a.Id);
 		}
 	}
 }
