@@ -1,6 +1,5 @@
 ﻿@using HoangLongStore.ViewModels
 @model DetailOrderViewModel
-
 @{
     ViewData["Title"] = "Index";
 }
@@ -33,27 +32,27 @@
     <tbody>
 @foreach (var item in Model.OrderDetails) {
         <tr>
-           <input asp-for="@item.Id" type="hidden" value= "@item.Id" id="id @item.Id" />
+           <input asp-for="@item.Id" type="hidden" value= "@item.Id" id="id @item.Id"/>
 
             <td  style= "display: none">
                 @Html.DisplayFor(modelItem => item.Order.Id)
-                <input asp-for="@item.OrderId" type="hidden" value= "@item.Order.Id" />
+                <input asp-for="@item.OrderId" type="hidden" value= "@item.Order.Id"/>
 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.NameProduct)
-                <input asp-for="@item.ProductId" type="hidden" value= "@item.ProductId" />
+                <input asp-for="@item.ProductId" type="hidden" value= "@item.ProductId"/>
 
             </td>
             <td>
                 @if(item.Order.StatusOrder == HoangLongStore.Enums.OrderStatus.Unconfirmed){
                 <input asp-for="@item.Quantity" style="width: 68px !important" id="quantity @item.Id"/>
                 }
-                else{ @Html.DisplayFor(modelItem => item.Product.QuantityProduct)}
+                else{ @Html.DisplayFor(modelItem => item.Quantity)}
             </td>
             <td>
              <input asp-for="@item.Price" type="hidden" value= "@item.Price"  id="price @item.Id"/>
-                    <p  id="demo @item.Id" >@item.Price</p>
+                    <p  id="demo @item.Id" >@item.Price </p>
             </td>
             <td>
                 <a asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">View Product</a>
@@ -63,13 +62,15 @@
                         <a src="#"  onclick="refresh(
                             document.getElementById('quantity @item.Id').value,
                             document.getElementById('price @item.Id').value, 
-                            document.getElementById('id @item.Id').value)">| Update</a>
+                            document.getElementById('id @item.Id').value)" >| Update</a>
                     }
                 </td>
  
         </tr>
 }
+
     </tbody>
+
 </table>
 
 
@@ -98,13 +99,13 @@
                 <div class="col-8"><b>Total Order</b></div>
                 <div class="ms-auto"><b class="text-success">@Model.Order.PriceOrder VND</b></div>
               </div>
-        @if (@Model.Order.StatusOrder == HoangLongStore.Enums.OrderStatus.Unconfirmed)
+    
+                @if (@Model.Order.StatusOrder == HoangLongStore.Enums.OrderStatus.Unconfirmed)
         {
-            <a asp-controller="OrderDetails" asp-action="abc" class="btn btn-info" > Purchase</a>
+            <a asp-controller="Orders" asp-action="Purchase" class="btn btn-info" > Purchase</a>
         }
     </div>
 </div>
-
 
 <script>
 

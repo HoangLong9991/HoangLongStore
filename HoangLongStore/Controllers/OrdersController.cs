@@ -10,6 +10,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
+using HoangLongStore.ViewModels;
 
 namespace HoangLongStore.Controllers
 {
@@ -117,16 +118,18 @@ namespace HoangLongStore.Controllers
 		[HttpGet]
 		public IActionResult Purchase()
 		{
+
 			var orderToBuy = context.Orders.Include(t => t.OrderDetails).SingleOrDefault(t => t.UserId == userManager.GetUserId(User) && t.StatusOrder == OrderStatus.Unconfirmed);
-			
-			foreach(var item in orderToBuy.OrderDetails)
-			{					
+
+			foreach (var item in orderToBuy.OrderDetails)
+			{
 				var productToBuy = context.Products.SingleOrDefault(t => t.Id == item.ProductId);
 
 				if (productToBuy.QuantityProduct > 0)
 				{
 					productToBuy.QuantityProduct -= item.Quantity;
-
+					//item.Quantity = cart.OrderDetails.SingleOrDefault(t => t.Id == item.Id).Quantity;
+					//item.Price = cart.OrderDetails.SingleOrDefault(t => t.Id == item.Id).Price * item.Quantity;
 				}
 				else
 				{
@@ -135,9 +138,11 @@ namespace HoangLongStore.Controllers
 
 				}
 			}
+			//context.SaveChanges();
+
 			orderToBuy.PriceOrder = GetPriceOfOrder(orderToBuy.Id);
 			orderToBuy.StatusOrder = OrderStatus.InProgress;
-	
+
 			context.SaveChanges();
 			return RedirectToAction("Index");
 		}

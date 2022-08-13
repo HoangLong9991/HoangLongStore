@@ -74,17 +74,28 @@ namespace HoangLongStore.Controllers
 			return RedirectToAction("Index");
 		}
 
-		[HttpGet]
-		public IActionResult abc(DetailOrderViewModel cart)
+		
+
+		[NonAction]
+		internal int GetPriceOfOrder(int idOrder)
 		{
-			foreach(var item in cart.OrderDetails)
+			var orderDetails = context.OrderDetails.Where(t => t.OrderId == idOrder);
+			int totalPrice = 0;
+			foreach (var item in orderDetails)
 			{
-				var orderdetail = context.OrderDetails.SingleOrDefault(t => t.Id == item.Id);
-				orderdetail.Quantity = item.Quantity;
+				totalPrice += item.Price;
 			}
-			var a = context.Orders.SingleOrDefault(t => t.Id == cart.Order.Id);
-			context.SaveChanges();
-			return RedirectToAction( "Index" , a.Id);
+			return totalPrice;
 		}
+
+		//[HttpGet]
+		//public IActionResult Edit(OrderDetail a)
+		//{
+		//	var b = context.OrderDetails.SingleOrDefault(t => t.Id == a.Id);
+		//	b.Quantity = a.Quantity;
+		//	context.SaveChanges();
+		//	return RedirectToAction("Index");
+
+		//}
 	}
 }
