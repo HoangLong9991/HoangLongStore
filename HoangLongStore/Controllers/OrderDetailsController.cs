@@ -88,14 +88,19 @@ namespace HoangLongStore.Controllers
 			return totalPrice;
 		}
 
-		//[HttpGet]
-		//public IActionResult Edit(OrderDetail a)
-		//{
-		//	var b = context.OrderDetails.SingleOrDefault(t => t.Id == a.Id);
-		//	b.Quantity = a.Quantity;
-		//	context.SaveChanges();
-		//	return RedirectToAction("Index");
+		[HttpPost]
+		public IActionResult Edit(DetailOrderViewModel a)
+		{
+			foreach (var item in a.OrderDetails)
+			{
+				var b = context.OrderDetails.Include(t => t.Product).SingleOrDefault(t => t.Id == item.Id);
+				b.Quantity = item.Quantity;
+				b.Price = b.Quantity * b.Product.PriceProduct;
 
-		//}
+			}
+			context.SaveChanges();
+			return RedirectToAction("Purchase", "Orders");
+
+		}
 	}
 }

@@ -138,7 +138,6 @@ namespace HoangLongStore.Controllers
 
 				}
 			}
-			//context.SaveChanges();
 
 			orderToBuy.PriceOrder = GetPriceOfOrder(orderToBuy.Id);
 			orderToBuy.StatusOrder = OrderStatus.InProgress;
