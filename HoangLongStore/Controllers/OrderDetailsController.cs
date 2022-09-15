@@ -39,13 +39,12 @@ namespace HoangLongStore.Controllers
 
 				cart.Order = context.Orders.SingleOrDefault(t => t.Id == id);
 			}
-			else
-			{
+
 				cart.OrderDetails = context.OrderDetails.Include(t => t.Product)
 				.Include(t => t.Order).Where(t => t.Order.StatusOrder == Enums.OrderStatus.Unconfirmed).ToList();
 
 				cart.Order = context.Orders.SingleOrDefault(t => t.StatusOrder == Enums.OrderStatus.Unconfirmed);
-			}
+			
 			
 			return View(cart);
 		}
