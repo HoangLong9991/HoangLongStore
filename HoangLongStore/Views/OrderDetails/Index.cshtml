@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Index";
 }
+
+@if (Model.OrderDetails.Count != 0)
+{
 <form asp-action="Edit"  asp-controller="OrderDetails" method="post">
 <p>
     <a asp-controller="Orders" asp-action="Index">List Orders</a>
@@ -112,6 +115,30 @@
     </div>
 </div>
 </form>
+
+}
+else
+{
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Cart</h5>
+                    </div>
+                    <div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center">
+                            <img src="https://cdn.dribbble.com/users/44167/screenshots/4199208/media/e2f1188c18430f9ab0af074ae7a88ee8.png?compress=1&resize=400x300&vertical=top" width="330" height="330" class="img-fluid mb-4 mr-3">
+                            <h5><strong>Your Cart is Empty</strong></h5>
+                            <h6>Add something to make me happy :)</h6>
+                            <a asp-action="Index" asp-controller="Customer" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Continue shopping</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 <script>
 
 function refresh(quantity, price, id) {
