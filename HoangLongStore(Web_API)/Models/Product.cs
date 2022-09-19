@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HoangLongStore_Web_API_.Models
 {
@@ -14,10 +15,11 @@ namespace HoangLongStore_Web_API_.Models
 		public int PriceProduct { get; set; }
 		public string DescriptionProduct { get; set; }
 		public string ImageProduct { get; set; }
-		//[Required]
-		//[ForeignKey("Brand")]
-		//public int BrandId { get; set; }
-		//public Brand Brand { get; set; }
+		[Required]
+		[ForeignKey("Brand")]
+		public int BrandId { get; set; }
+		[JsonIgnore]
+		public Brand Brand { get; set; }
 
 
 	}

@@ -10,6 +10,7 @@ namespace HoangLongStore_Web_API_.Data
 		{
 		}
 		public DbSet<Product> Products { get; set; }
+		public DbSet<Brand> Brands { get; set; }
 
 	}
 }

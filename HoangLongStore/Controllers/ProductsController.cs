@@ -74,7 +74,7 @@ namespace HoangLongStore.Controllers
 					PriceProduct = productViewModel.Product.PriceProduct,
 					DescriptionProduct = productViewModel.Product.DescriptionProduct,
 					ImageProduct = "1" + productViewModel.Product.NameProduct + ".jpg",
-					BrandId = productViewModel.Product.BrandId
+					BrandId = productViewModel.BrandId
 				};
 				context.Add(newProduct);
 				context.SaveChanges();

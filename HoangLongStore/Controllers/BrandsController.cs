@@ -3,6 +3,7 @@ using HoangLongStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -71,18 +72,18 @@ namespace HoangLongStore.Controllers
 			return RedirectToAction("Index");
 		}
 		
-		[HttpGet]
-		public IActionResult Detail(int id)
-		{
-			Brand brandInDb = context.Brands.SingleOrDefault(t => t.Id == id);
+		//[HttpGet]
+		//public IActionResult Detail(int id)
+		//{
+		//	Brand brandInDb = context.Brands.Include(p => p.Products).SingleOrDefault(t => t.Id == id);
 
 
-			List<Product> productsInDb = context.Products.ToList();
+		//	//List<Product> productsInDb = context.Products.ToList();
 
-			List<Product> productsOfBrand = productsInDb.Where(p => p.BrandId == brandInDb.Id).ToList();		
-			ViewBag.BrandName = brandInDb.Name;
+		//	//List<Product> productsOfBrand = productsInDb.Where(p => p.BrandId == brandInDb.Id).ToList();		
+		//	ViewBag.BrandName = brandInDb.Name;
 
-			return View(productsOfBrand);
-		}
+		//	return View(brandInDb.Products);
+		//}
 	}
 }
