@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="DTOs\Requests\" />
     <Folder Include="Views\Shared\" />
+    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />

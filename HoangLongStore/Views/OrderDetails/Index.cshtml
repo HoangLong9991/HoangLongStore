@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-@if (Model.OrderDetails.Count != 0)
-{
-<form asp-action="Edit"  asp-controller="OrderDetails" method="post">
 <p>
     <a asp-controller="Orders" asp-action="Index">List Orders</a>
 </p>
+@if (Model.OrderDetails.Count != 0)
+{
+<form asp-action="Edit"  asp-controller="OrderDetails" method="post">
+
 
 
 <table class="table" style="background-color: #f8f9fa; ">
