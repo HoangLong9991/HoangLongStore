@@ -85,5 +85,6 @@ namespace HoangLongStore.Controllers
 
 		//	return View(brandInDb.Products);
 		//}
+
 	}
 }

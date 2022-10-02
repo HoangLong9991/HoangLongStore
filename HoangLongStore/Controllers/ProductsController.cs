@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,16 +24,65 @@ namespace HoangLongStore.Controllers
 			this.context = context;
 			this.userManager = userManager;
 		}
-
-		public IActionResult Index()
+		[HttpGet]
+		public IActionResult Index(string id)
 		{
-			var result = context.Products.ToList();
-			foreach (var item in result)
+			var productsInDB = context.Products.ToList();
+
+			if (id == "1")
+			{
+				productsInDB = SortByCheapToExpensive(productsInDB);
+			}
+			if (id == "2")
+			{
+				productsInDB = SortByExpensiveToCheap(productsInDB);
+			}
+			foreach (var item in productsInDB)
 			{
 				item.ImageProduct = "//" + Request.Host.Value + "/images/" + item.ImageProduct;
 			}
-			
-			return View(result);
+			return View(productsInDB);
+		}
+		[NonAction]
+		private List<Product> SortByExpensiveToCheap(List<Product> products)
+		{
+			for (int i = 0; i < products.Count; i++)
+			{
+				int max = i;
+				for (int y = i + 1; y < products.Count; y++)
+				{
+					if (products[max].PriceProduct < products[y].PriceProduct)
+					{
+						max = y;
+					}
+				}
+				var valueMax = products[i];
+				products[i] = products[max];
+				products[max] = valueMax;
+
+			}
+			return products;
+		}
+
+		[NonAction]
+		private List<Product> SortByCheapToExpensive(List<Product> products)
+		{
+			for (int i = 0; i < products.Count; i++)
+			{
+				int min = i;
+				for (int y = i + 1; y < products.Count; y++)
+				{
+					if (products[min].PriceProduct > products[y].PriceProduct)
+					{
+						min = y;
+					}
+				}
+				var valueMax = products[i];
+				products[i] = products[min];
+				products[min] = valueMax;
+
+			}
+			return products;
 		}
 
 		[Authorize(Roles = "admin")]
